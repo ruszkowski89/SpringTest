@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.util.List;
 
-public class Triangle {
+public class Triangle implements Shape{
 
     private Point pointA;
     private Point pointB;
@@ -24,6 +24,7 @@ public class Triangle {
     }
 
     public void draw(){
+        System.out.println("Drawing Triangle: ");
         System.out.println("Triangle: " + "\n"
                                         + getPointA().getX() + ", " + getPointA().getY() + "\n"
                                         + getPointB().getX() + ", " + getPointB().getY() + "\n"
