@@ -2,6 +2,8 @@ package com.ruszkowski.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +12,9 @@ import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
 @Component
-public class Circle implements Shape {
+public class Circle implements Shape, ApplicationEventPublisherAware {
 
+    private ApplicationEventPublisher publisher;
     private Point center;
     private MessageSource messageSource;
 
@@ -28,6 +31,8 @@ public class Circle implements Shape {
         System.out.println("Drawing circle: ");
         System.out.println("Center is: " + center.getX() + ", " + center.getY());
         System.out.println(this.messageSource.getMessage("points", new Object[] {center.getX(), center.getY()}, "DefaultText", null));
+        DrawEvent drawEvent = new DrawEvent(this);
+        publisher.publishEvent(drawEvent);
     }
 
     public Point getCenter() {
@@ -47,5 +52,9 @@ public class Circle implements Shape {
     @PreDestroy
     public void destroyCircle(){
         System.out.println("This text is shown before destroyment");
+    }
+
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.publisher = applicationEventPublisher;
     }
 }
